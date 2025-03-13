@@ -1,4 +1,4 @@
-import { Client } from "./deps.ts";
+import { Client } from "../deps.ts";
 
 const client = new Client({
   user: "kagz03",

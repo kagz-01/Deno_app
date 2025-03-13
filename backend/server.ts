@@ -1,19 +1,17 @@
-import { Application, Router } from "https://deno.land/x/oak@v12.6.1/mod.ts";
-import client from "./db.ts"; // Import DB connection
+export { Application, Router } from "https://deno.land/x/oak@v12.6.1/mod.ts";
+import userRoutes from "./routes/userRoutes.ts";
+import bookingRoutes from "./routes/bookingRoutes.ts";
+import { Application, Router } from "./deps.ts";
+
 
 const app = new Application();
 const router = new Router();
 
-router.get("/", async (ctx) => {
-  try {
-    await client.connect();
-    ctx.response.body = { message: "Connected to PostgreSQL!" };
-  } catch (error) {
-    ctx.response.body = { error: "Database connection failed!" };
-  } finally {
-    await client.end();
-  }
-});
+app.use(userRoutes.routes());
+app.use(userRoutes.allowedMethods());
+app.use(bookingRoutes.routes());
+app.use(bookingRoutes.allowedMethods());
+
 
 app.use(router.routes());
 app.use(router.allowedMethods());
